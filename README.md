@@ -33,3 +33,14 @@ python3 test_connection.py
 COMING SOON:
 
 - Docker kafka
+
+git clone https://github.com/confluentinc/examples
+cd examples
+git checkout 5.4.0-post
+cd cp-all-in-one/
+docker-compose up -d --build
+docker-compose ps
+
+- Connect here:
+
+http://localhost:9021/
