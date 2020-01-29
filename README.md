@@ -28,3 +28,8 @@ export ROLE=
 - Run the script:
 
 python3 test_connection.py
+
+
+COMING SOON:
+
+- Docker kafka
