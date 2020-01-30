@@ -63,6 +63,7 @@ brew install --default-names gnu-sed
 alter user jsmith set rsa_public_key_2=’JERUEHtcve…’;
 
 cd  snowflake_learning/confluent_with_connector
+#UPDATE snowflake-connector-kafkapoc.json with correct info
 docker-compose up -d --build
 docker-compose ps
 
