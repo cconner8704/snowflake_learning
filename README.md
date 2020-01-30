@@ -83,3 +83,13 @@ docker-compose ps
 - Connect here:    
     
 http://localhost:9021/    
+
+
+COMMANDS of NOTE:
+
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker image ls -a
+docker rmi xxx
+docker-compose build
+docker-compose up
