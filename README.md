@@ -70,10 +70,10 @@ alter user jsmith set rsa_public_key_2='JERUEHtcve…';
     
 cp snowflake-connector-kafkapoc.json.example snowflake-connector-kafkapoc.json  
 gsed -i "s*\"xx\",*\"$(grep -v KEY rsa_key.p8 | tr -d \\n)\",*g" snowflake-connector-kafkapoc.json  
+#Make sure to create the database and schema below
 #UPDATE snowflake-connector-kafkapoc.json with correct info these properties:    
 #    "snowflake.url.name":"koen.eu-central-1.snowflakecomputing.com",    
 #    "snowflake.user.name":"koen@koen.io",    
-#    "snowflake.private.key":"xx",    
 #    "snowflake.private.key.passphrase":"koen",    
 #    "snowflake.database.name":"sandbox",    
 #    "snowflake.schema.name":"kafka_target",    
