@@ -64,7 +64,8 @@ brew install xclip
 grep -v KEY rsa_key.pub | tr -d \\n  
   
 #Go to Snowflake editor and update key for your user with the generated public key:    
-alter user jsmith set rsa_public_key_2=’JERUEHtcve…’;    
+use role securityadmin;
+alter user jsmith set rsa_public_key_2='JERUEHtcve…';    
     
 cp snowflake-connector-kafkapoc.json.example snowflake-connector-kafkapoc.json  
 #UPDATE snowflake-connector-kafkapoc.json with correct info these properties:    
