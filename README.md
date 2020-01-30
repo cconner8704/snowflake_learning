@@ -60,11 +60,8 @@ openssl rsa -in rsa_key.p8 -out rsa_key.priv
 brew cask install xquartz  
 brew install xclip  
   
-  
-    
 #Create the key string for Snowflake:  
-  
-  
+grep -v KEY rsa_key.pub | tr -d \\n  
   
 #Go to Snowflake editor and update key for your user with the generated public key:    
 alter user jsmith set rsa_public_key_2=’JERUEHtcve…’;    
