@@ -47,7 +47,6 @@ docker-compose up -d --build
 docker-compose ps  
   
 ###CURRENT####  
-mkdir -p ../../tmp/rsa && cd ../../tmp/rsa  
 openssl genrsa -out rsa_key.pem 2048  
 #This will ask for password, enter one and use in following 2 commands  
 openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out rsa_key.p8  
@@ -57,8 +56,11 @@ openssl rsa -in rsa_key.p8 -out rsa_key.priv
 #The public key needs to be added manually to Snowflake the database and the .p8 file needs to be added to the sink connector definition, “snowflake.private.key”:”xx”,Important: remove new lines and also the header and footer from the key.  
   
 #Install gnu-sed to make your life easier:  
-brew install --default-names gnu-sed   
+brew install gnu-sed   
   
+#Create the key string for Snowflake:
+
+
 #Go to Snowflake editor and update key for your user with the generated public key:  
 alter user jsmith set rsa_public_key_2=’JERUEHtcve…’;  
   
