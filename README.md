@@ -59,6 +59,7 @@ openssl rsa -in rsa_key.p8 -out rsa_key.priv
 #Tools to make life cool  
 brew cask install xquartz  
 brew install xclip  
+brew install gnu-sed  
   
 #Create the key string for Snowflake:  
 grep -v KEY rsa_key.pub | tr -d \\n  
@@ -68,6 +69,7 @@ use role securityadmin;
 alter user jsmith set rsa_public_key_2='JERUEHtcve…';    
     
 cp snowflake-connector-kafkapoc.json.example snowflake-connector-kafkapoc.json  
+gsed -i "s*\"xx\",*\"$(grep -v KEY rsa_key.p8 | tr -d \\n)\",*g" snowflake-connector-kafkapoc.json  
 #UPDATE snowflake-connector-kafkapoc.json with correct info these properties:    
 #    "snowflake.url.name":"koen.eu-central-1.snowflakecomputing.com",    
 #    "snowflake.user.name":"koen@koen.io",    
