@@ -2,7 +2,7 @@
 version: '2'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.3.1
+    image: confluentinc/cp-zookeeper:5.4.0
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -10,8 +10,9 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+
   broker:
-    image: confluentinc/cp-enterprise-kafka:5.3.1
+    image: confluentinc/cp-enterprise-kafka:5.4.0
     hostname: broker
     container_name: broker
     depends_on:
@@ -32,8 +33,9 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+
   schema-registry:
-    image: confluentinc/cp-schema-registry:5.3.1
+    image: confluentinc/cp-schema-registry:5.4.0
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -44,6 +46,7 @@ services:
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+
   connect:
     image: confluentinc/kafka-connect-datagen:latest
     build:
@@ -75,15 +78,17 @@ services:
       CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      # Assumes image is based on confluentinc/kafka-connect-complex-example-datagen:latest which is pulling 5.1.1 Connect image
-      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.2.2.jar
+      # Assumes image based on confluentinc/kafka-connect-complex-example-datagen:latest which is pulling 5.1.1 Connect image
+#      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.2.2.jar
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.4.0.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
     command: "bash -c 'if [ ! -d /usr/share/confluent-hub-components/confluentinc-kafka-connect-complex-example-datagen ]; then echo \"WARNING: Did not find directory for kafka-connect-complex-example-datagen (did you remember to run: docker-compose up -d --build ?)\"; fi ; /etc/confluent/docker/run'"
+
   control-center:
-    image: confluentinc/cp-enterprise-control-center:5.3.1
+    image: confluentinc/cp-enterprise-control-center:5.4.0
     hostname: control-center
     container_name: control-center
     depends_on:
@@ -106,8 +111,9 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
+
   ksql-server:
-    image: confluentinc/cp-ksql-server:5.3.1
+    image: confluentinc/cp-ksql-server:5.4.0
     hostname: ksql-server
     container_name: ksql-server
     depends_on:
@@ -126,8 +132,9 @@ services:
       KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+
   ksql-cli:
-    image: confluentinc/cp-ksql-cli:5.3.1
+    image: confluentinc/cp-ksql-cli:5.4.0
     container_name: ksql-cli
     depends_on:
       - broker
@@ -135,9 +142,10 @@ services:
       - ksql-server
     entrypoint: /bin/sh
     tty: true
+
   ksql-datagen:
     # Downrev ksql-examples to 5.1.2 due to DEVX-798 (work around issues in 5.2.0)
-    image: confluentinc/ksql-examples:5.3.1
+    image: confluentinc/ksql-examples:5.4.0
     hostname: ksql-datagen
     container_name: ksql-datagen
     depends_on:
@@ -158,8 +166,9 @@ services:
       STREAMS_BOOTSTRAP_SERVERS: broker:29092
       STREAMS_SCHEMA_REGISTRY_HOST: schema-registry
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
+
   rest-proxy:
-    image: confluentinc/cp-kafka-rest:5.3.1
+    image: confluentinc/cp-kafka-rest:5.4.0
     depends_on:
       - zookeeper
       - broker
