@@ -85,6 +85,37 @@ docker-compose ps
 http://localhost:9021/    
 
 
+#####Notes for later####
+docker exec -it connect curl -X POST http://localhost:8083/connectors -H "Content-Type: application/json" -d '{ "name": "jdbc_source_snowflake_v1", "config": { "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector", "connection.url": "jdbc:snowflake://xxxxx.snowflakecomputing.com:443/?warehouse=<user>_wh", "connection.user": "<user>", "connection.password": "pass", "topic.prefix": "pockafka", "mode":"bulk", "max.interval": 1000, "iterations": 10000000, "tasks.max": "1", "table.whitelist" : "SANDBOX.KAFKA_ORIG.CUSTOMER_DEMOGRAPHICS,SANDBOX.KAFKA_ORIG.CUSTOMER,SANDBOX.KAFKA_ORIG.CATALOG_SALES", "key.converter":"org.apache.kafka.connect.storage.StringConverter", "value.converter": "org.apache.kafka.connect.json.JsonConverter", "value.converter.schemas.enable": "false" } }'
+
+#SQL
+
+create database kafka_<user>_db;
+use kafka_<user>_db;
+create schema kafka_<user>_schema;
+use kafka_<user>_schema;
+-- Use a role that can create and manage roles and privileges:
+use role securityadmin;
+
+-- Create a Snowflake role with the privileges to work with the connector
+create role kafka_connector_role_<user>;
+
+-- Grant privileges on the database:
+grant usage on database kafka_<user>_db to role kafka_connector_role_<user>;
+
+-- Grant privileges on the schema:
+grant usage on schema kafka_<user>_db.kafka_<user>_schema to role kafka_connector_role_<user>;
+grant create table on schema kafka_<user>_db.kafka_<user>_schema to role kafka_connector_role_<user>;
+grant create stage on schema kafka_<user>_db.kafka_<user>_schema to role kafka_connector_role_<user>;
+grant create pipe on schema kafka_<user>_db.kafka_<user>_schema to role kafka_connector_role_<user>;
+
+
+-- Grant the custom role to an existing user:
+grant role kafka_connector_role_<user> to user <user>;
+
+
+
+
 COMMANDS of NOTE:
 
 docker stop $(docker ps -a -q)
