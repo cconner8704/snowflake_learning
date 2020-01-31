@@ -6,7 +6,7 @@ services:
     hostname: zookeeper
     container_name: zookeeper
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     ports:
       - "2181:2181"
@@ -21,7 +21,7 @@ services:
     depends_on:
       - zookeeper
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     ports:
       - "29092:29092"
@@ -48,7 +48,7 @@ services:
       - zookeeper
       - broker
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     ports:
       - "8081:8081"
@@ -68,7 +68,7 @@ services:
       - broker
       - schema-registry
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     ports:
       - "8083:8083"
@@ -95,9 +95,10 @@ services:
       CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.4.0.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/kafka-connect/snowflake"
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components,/etc/kafka-connect/jars"
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
-    command: "bash -c 'if [ ! -d /usr/share/confluent-hub-components/confluentinc-kafka-connect-complex-example-datagen ]; then echo \"WARNING: Did not find directory for kafka-connect-complex-example-datagen (did you remember to run: docker-compose up -d --build ?)\"; fi ; /etc/confluent/docker/run'"
+#    command: "bash -c '/tmp/test.sh ; if [ ! -d /usr/share/confluent-hub-components/confluentinc-kafka-connect-complex-example-datagen ]; then echo \"WARNING: Did not find directory for kafka-connect-complex-example-datagen (did you remember to run: docker-compose up -d --build ?)\"; fi ; /etc/confluent/docker/run'"
+    command: "bash -c '/bin/cp -f /tmp/kafka-connect/jars/* /etc/kafka-connect/jars/ ; if [ ! -d /usr/share/confluent-hub-components/confluentinc-kafka-connect-complex-example-datagen ]; then echo \"WARNING: Did not find directory for kafka-connect-complex-example-datagen (did you remember to run: docker-compose up -d --build ?)\"; fi ; /etc/confluent/docker/run'"
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.4.0
@@ -110,7 +111,7 @@ services:
       - connect
       - ksql-server
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     ports:
       - "9021:9021"
@@ -135,7 +136,7 @@ services:
       - broker
       - connect
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     ports:
       - "8088:8088"
@@ -155,7 +156,7 @@ services:
     image: confluentinc/cp-ksql-cli:5.4.0
     container_name: ksql-cli
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     depends_on:
       - broker
@@ -170,7 +171,7 @@ services:
     hostname: ksql-datagen
     container_name: ksql-datagen
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     depends_on:
       - ksql-server
@@ -198,7 +199,7 @@ services:
       - broker
       - schema-registry
     volumes:
-      - kafka-connect-snowflake:/kafka-connect/snowflake
+      - kafka-connect-plugins:/etc/kafka-connect/jars
       - kafka-connect-jdbc:/kafka-connect/jdbc
     ports:
       - 8082:8082
@@ -212,5 +213,5 @@ services:
 
 
 volumes:
-  kafka-connect-snowflake:
+  kafka-connect-plugins:
   kafka-connect-jdbc:
