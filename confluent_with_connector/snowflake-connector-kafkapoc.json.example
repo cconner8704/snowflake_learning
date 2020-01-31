@@ -11,7 +11,7 @@
     "snowflake.private.key":"xx",
     "snowflake.private.key.passphrase":"<keypass_changeme>",
     "snowflake.database.name":"kafka_<user_changeme>_db",
-    "snowflake.schema.name":"kafka_<user_changeme>tapir_schema",
+    "snowflake.schema.name":"kafka_<user_changeme>_schema",
     "key.converter":"org.apache.kafka.connect.storage.StringConverter",
     "value.converter":"com.snowflake.kafka.connector.records.SnowflakeJsonConverter",
     "value.converter.schema.registry.url":"http://localhost:8081"
