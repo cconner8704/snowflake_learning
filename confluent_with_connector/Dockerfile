@@ -27,5 +27,4 @@ RUN curl -sSL "https://repo1.maven.org/maven2/net/snowflake/snowflake-jdbc/3.9.2
 # copy the properties file
 # COPY datagen-users.json /tmp/
 COPY snowflake-connector-kafkapoc.json /tmp
-COPY test.sh /tmp
 RUN ls -alrtR /etc/kafka-connect/ > /tmp/chrisinfo

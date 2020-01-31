@@ -114,6 +114,37 @@ grant create pipe on schema kafka_<user>_db.kafka_<user>_schema to role kafka_co
 grant role kafka_connector_role_<user> to user <user>;
 
 
+#Check containers:
+
+#Empty response:
+curl localhost:8083/connectors
+
+#Should have snowflake sink:
+curl localhost:8083/connector-plugins
+
+#Start data generator
+
+curl -X POST -H "Content-Type: application/json" --data '{"name": "datagen-clickstream", "config": {"connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
+    "name":"datagen-clickstream",
+    "kafka.topic": "CLICKSTREAM_TOPIC",
+    "quickstart": "clickstream",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "max.interval": 1000,
+    "iterations": 10000000,
+    "tasks.max": "1" }}' http://localhost:8083/connectors
+
+
+#Check data generator
+
+curl localhost:8083/connectors/datagen-clickstream/status/
+
+#Start Snowflake Sink:
+docker exec -it connect curl -X POST http://localhost:8083/connectors -H "Content-Type: application/json" -d @/tmp/snowflake-connector-kafkapoc.json
+
+#Check snowflake sink status
+curl localhost:8083/connectors/SnowflakeSinkConnector/status/
 
 
 COMMANDS of NOTE:
