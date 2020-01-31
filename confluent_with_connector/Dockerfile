@@ -26,4 +26,4 @@ COPY snowflake-connector-kafkapoc.json /tmp
 
 # datagen config
 ENV CONNECT_PLUGIN_PATH="/usr/share/java,/usr/share/confluent-hub-components,/etc/kafka-connect/jars"
-RUN /bin/cp -f /tmp/snowflake-kafka-connector-0.5.5.jar /etc/kafka-connect/jars && /bin/cp -f /tmp/snowflake-jdbc-connector-3.9.2.jar /etc/kafka-connect/jdbc && confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:0.1.0
+RUN /bin/cp -f /tmp/snowflake-kafka-connector-0.5.5.jar /etc/kafka-connect/jars && /bin/cp -f /tmp/snowflake-jdbc-connector-3.9.2.jar /etc/kafka-connect/jdbc && ls -alrt /etc/kafka-connect/jars > /tmp/chrisinfo &&  confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:0.1.0
