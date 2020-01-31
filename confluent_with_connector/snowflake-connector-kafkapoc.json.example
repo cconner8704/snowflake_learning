@@ -1,17 +1,19 @@
-{
-  "name":"kafkasnowflakeingestkafkapoc",
+{"name": "SnowflakeSinkConnector",
   "config":{
-    "connector.class":"com.snowflake.kafka.connector.SnowflakeSinkConnector",
-    "topics":"pockafkaCATALOG_SALES,pockafkaCUSTOMER,pockafkaCUSTOMER_DEMOGRAPHICS",
-    "snowflake.topic2table.map": "pockafkaCATALOG_SALES:kafkasales,pockafkaCUSTOMER:kafkacustomer,pockafkaCUSTOMER_DEMOGRAPHICS:kafkademographics",
-    "snowflake.url.name":"koen.eu-central-1.snowflakecomputing.com",
-    "snowflake.user.name":"koen@koen.io",
+    "connector.class": "com.snowflake.kafka.connector.SnowflakeSinkConnector",
+    "name":"SnowflakeSinkConnector",
+    "tasks.max":"8",
+    "topics":"CLICKSTREAM_TOPIC",
+    "buffer.count.records":"10",
+    "buffer.size.bytes":"6553",
+    "snowflake.url.name":"<url_changeme>.snowflakecomputing.com",
+    "snowflake.user.name":"<user_changeme>",
     "snowflake.private.key":"xx",
-    "snowflake.private.key.passphrase":"koen",
-    "snowflake.database.name":"sandbox",
-    "snowflake.schema.name":"kafka_target",
+    "snowflake.private.key.passphrase":"<keypass_changeme>",
+    "snowflake.database.name":"kafka_<user_changeme>_db",
+    "snowflake.schema.name":"kafka_<user_changeme>tapir_schema",
     "key.converter":"org.apache.kafka.connect.storage.StringConverter",
     "value.converter":"com.snowflake.kafka.connector.records.SnowflakeJsonConverter",
-    "value.converter.schema.registry.url":"http://schema-registry:8081"
+    "value.converter.schema.registry.url":"http://localhost:8081"
   }
 }
