@@ -6,7 +6,8 @@ services:
     hostname: zookeeper
     container_name: zookeeper
     volumes:
-      - kafka-connect:/etc/kafka-connect
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     ports:
       - "2181:2181"
     environment:
@@ -20,7 +21,8 @@ services:
     depends_on:
       - zookeeper
     volumes:
-      - kafka-connect:/etc/kafka-connect
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     ports:
       - "29092:29092"
       - "9092:9092"
@@ -46,7 +48,8 @@ services:
       - zookeeper
       - broker
     volumes:
-      - kafka-connect:/etc/kafka-connect
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     ports:
       - "8081:8081"
     environment:
@@ -65,7 +68,8 @@ services:
       - broker
       - schema-registry
     volumes:
-      - kafka-connect:/etc/kafka-connect
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     ports:
       - "8083:8083"
     environment:
@@ -106,7 +110,8 @@ services:
       - connect
       - ksql-server
     volumes:
-      - kafka-connect:/etc/kafka-connect
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     ports:
       - "9021:9021"
     environment:
@@ -130,7 +135,8 @@ services:
       - broker
       - connect
     volumes:
-      - kafka-connect:/etc/kafka-connect
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     ports:
       - "8088:8088"
     environment:
@@ -148,6 +154,9 @@ services:
   ksql-cli:
     image: confluentinc/cp-ksql-cli:5.4.0
     container_name: ksql-cli
+    volumes:
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     depends_on:
       - broker
       - connect
@@ -160,6 +169,9 @@ services:
     image: confluentinc/ksql-examples:5.4.0
     hostname: ksql-datagen
     container_name: ksql-datagen
+    volumes:
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     depends_on:
       - ksql-server
       - broker
@@ -186,7 +198,8 @@ services:
       - broker
       - schema-registry
     volumes:
-      - kafka-connect:/etc/kafka-connect
+      - kafka-connect-jars:/etc/kafka-connect/jars
+      - kafka-connect-jdbc:/etc/kafka-connect/plugins
     ports:
       - 8082:8082
     hostname: rest-proxy
@@ -199,4 +212,5 @@ services:
 
 
 volumes:
-  kafka-connect:
+  kafka-connect-jars:
+  kafka-connect-jdbc:
